@@ -5,7 +5,9 @@ namespace App\Filament\Resources\News;
 use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Pages\EditNews;
 use App\Filament\Resources\News\Pages\ListNews;
+use App\Filament\Resources\News\Pages\ViewNews;
 use App\Filament\Resources\News\Schemas\NewsForm;
+use App\Filament\Resources\News\Schemas\NewsInfolist;
 use App\Filament\Resources\News\Tables\NewsTable;
 use App\Models\News;
 use BackedEnum;
@@ -31,6 +33,11 @@ class NewsResource extends Resource
         return NewsForm::configure($schema);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return NewsInfolist::configure($schema);
+    }
+
     public static function table(Table $table): Table
     {
         return NewsTable::configure($table);
@@ -48,6 +55,7 @@ class NewsResource extends Resource
         return [
             'index' => ListNews::route('/'),
             'create' => CreateNews::route('/create'),
+            'view' => ViewNews::route('/{record}'),
             'edit' => EditNews::route('/{record}/edit'),
         ];
     }

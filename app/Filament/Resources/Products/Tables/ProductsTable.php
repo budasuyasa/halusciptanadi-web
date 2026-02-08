@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductsTable
 {
@@ -41,6 +44,7 @@ class ProductsTable
                     ->label('Unggulan')
                     ->boolean(),
             ])
+            ->recordUrl(fn (Model $record): string => ProductResource::getUrl('view', ['record' => $record]))
             ->defaultSort('sort_order')
             ->filters([
                 SelectFilter::make('category_id')
@@ -48,6 +52,7 @@ class ProductsTable
                     ->relationship('category', 'name'),
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

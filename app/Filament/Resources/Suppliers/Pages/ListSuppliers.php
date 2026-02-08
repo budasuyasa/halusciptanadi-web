@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\Products\Pages;
+namespace App\Filament\Resources\Suppliers\Pages;
 
-use App\Exports\ProductTemplateExport;
-use App\Filament\Resources\Products\ProductResource;
-use App\Imports\ProductsImport;
+use App\Exports\SupplierTemplateExport;
+use App\Filament\Resources\Suppliers\SupplierResource;
+use App\Imports\SuppliersImport;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\FileUpload;
@@ -12,14 +12,14 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ListProducts extends ListRecords
+class ListSuppliers extends ListRecords
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = SupplierResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('importProducts')
+            Action::make('importSuppliers')
                 ->label('Import')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('gray')
@@ -33,15 +33,15 @@ class ListProducts extends ListRecords
                         ->required()
                         ->disk('local')
                         ->directory('imports')
-                        ->helperText('Upload file XLSX dengan kolom: name, sku, category, price, stock, dll.'),
+                        ->helperText('Upload file XLSX dengan kolom: name, contact_person, email, phone, city, dll.'),
                 ])
                 ->action(function (array $data): void {
-                    $import = new ProductsImport;
+                    $import = new SuppliersImport;
                     Excel::import($import, storage_path('app/private/'.$data['file']));
 
                     Notification::make()
                         ->title('Import selesai')
-                        ->body("{$import->getImportedCount()} produk ditambahkan, {$import->getUpdatedCount()} diperbarui.")
+                        ->body("{$import->getImportedCount()} supplier ditambahkan, {$import->getUpdatedCount()} diperbarui.")
                         ->success()
                         ->send();
                 }),
@@ -50,7 +50,7 @@ class ListProducts extends ListRecords
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('gray')
                 ->action(function () {
-                    return Excel::download(new ProductTemplateExport, 'template-produk.xlsx');
+                    return Excel::download(new SupplierTemplateExport, 'template-supplier.xlsx');
                 }),
             CreateAction::make(),
         ];

@@ -2,12 +2,15 @@
 
 namespace App\Filament\Resources\Careers\Tables;
 
+use App\Filament\Resources\Careers\CareerResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class CareersTable
 {
@@ -33,11 +36,13 @@ class CareersTable
                     ->date('d M Y')
                     ->sortable(),
             ])
+            ->recordUrl(fn (Model $record): string => CareerResource::getUrl('view', ['record' => $record]))
             ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

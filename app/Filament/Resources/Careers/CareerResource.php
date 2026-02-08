@@ -5,7 +5,9 @@ namespace App\Filament\Resources\Careers;
 use App\Filament\Resources\Careers\Pages\CreateCareer;
 use App\Filament\Resources\Careers\Pages\EditCareer;
 use App\Filament\Resources\Careers\Pages\ListCareers;
+use App\Filament\Resources\Careers\Pages\ViewCareer;
 use App\Filament\Resources\Careers\Schemas\CareerForm;
+use App\Filament\Resources\Careers\Schemas\CareerInfolist;
 use App\Filament\Resources\Careers\Tables\CareersTable;
 use App\Models\Career;
 use BackedEnum;
@@ -31,6 +33,11 @@ class CareerResource extends Resource
         return CareerForm::configure($schema);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return CareerInfolist::configure($schema);
+    }
+
     public static function table(Table $table): Table
     {
         return CareersTable::configure($table);
@@ -48,6 +55,7 @@ class CareerResource extends Resource
         return [
             'index' => ListCareers::route('/'),
             'create' => CreateCareer::route('/create'),
+            'view' => ViewCareer::route('/{record}'),
             'edit' => EditCareer::route('/{record}/edit'),
         ];
     }

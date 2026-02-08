@@ -2,13 +2,16 @@
 
 namespace App\Filament\Resources\News\Tables;
 
+use App\Filament\Resources\News\NewsResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class NewsTable
 {
@@ -34,11 +37,13 @@ class NewsTable
                     ->dateTime('d M Y')
                     ->sortable(),
             ])
+            ->recordUrl(fn (Model $record): string => NewsResource::getUrl('view', ['record' => $record]))
             ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

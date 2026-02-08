@@ -4,10 +4,10 @@ namespace App\Filament\Resources\Products\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -34,6 +34,11 @@ class ProductForm
                             ->label('Kategori')
                             ->relationship('category', 'name')
                             ->required()
+                            ->searchable()
+                            ->preload(),
+                        Select::make('supplier_id')
+                            ->label('Supplier')
+                            ->relationship('supplier', 'name')
                             ->searchable()
                             ->preload(),
                         TextInput::make('sku')
