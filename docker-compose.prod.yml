@@ -1,0 +1,16 @@
+services:
+  app:
+    image: ${ECR_REGISTRY}/halusciptanadi/web:main
+    container_name: halus-ciptanadi-app
+    ports:
+      - "80:80"
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      halus-ciptanadi:
+      halus_net:
+
+networks:
+  halus-ciptanadi:
+  halus_net:
+    external: true

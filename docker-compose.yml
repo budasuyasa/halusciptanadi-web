@@ -1,0 +1,49 @@
+services:
+  app:
+    container_name: halus-ciptanadi-app
+    build:
+      context: .
+      target: development
+      args:
+        USER_ID: $USER_ID
+        GROUP_ID: $GROUP_ID
+    ports:
+      - "8000:80"
+      - "5173:5173"
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - "./:/var/www/"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      halus-ciptanadi:
+  redis:
+    image: redis
+    container_name: halus-ciptanadi-redis
+    restart: unless-stopped
+    networks:
+      - halus-ciptanadi
+
+  mysql:
+    image: mysql:8.0
+    container_name: halus-ciptanadi-mysql
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: halus_ciptanadi
+      MYSQL_USER: halus
+      MYSQL_PASSWORD: halus
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - halus_data:/var/lib/mysql
+      - ./docker/mysql/my-custom.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - halus-ciptanadi
+volumes:
+  halus_data:
+networks:
+  halus-ciptanadi:
